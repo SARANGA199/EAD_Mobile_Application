@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		txtSignUp.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Intent signUp = new Intent(getApplicationContext(),Home.class);
+				Intent signUp = new Intent(getApplicationContext(),RegisterActivity.class);
 				startActivity(signUp);
 
 			}
