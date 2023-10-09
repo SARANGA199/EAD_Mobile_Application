@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ead_mobile_application.manager.ContextManager;
-import com.example.ead_mobile_application.manager.LoginManager;
+import com.example.ead_mobile_application.managers.ContextManager;
+import com.example.ead_mobile_application.managers.LoginManager;
 import com.example.ead_mobile_application.R.id;
 
 public class LoginActivity extends AppCompatActivity {

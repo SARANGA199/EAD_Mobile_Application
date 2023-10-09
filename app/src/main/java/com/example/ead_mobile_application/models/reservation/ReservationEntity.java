@@ -14,26 +14,34 @@ public class ReservationEntity {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
+    public String referenceId;
 
-    public String title;
-
-    @ColumnInfo(name = "due_date")
+    public String nic;
+    public String trainId;
+    public int passengersCount;
+    public double totalAmount;
+    @ColumnInfo(name = "book_date")
     @TypeConverters({DatabaseTypeConverters.class})
-    public Date dueDate;
+    public Date date;
+    public String departure;
 
     public ReservationStatus status;
 
     public static ReservationEntity fromDto(ReservationDto dto){
         ReservationEntity entity = new ReservationEntity();
         entity.id = 0; // room db will autogenerate for us after insert()
-        entity.title = dto.title;
-        entity.dueDate = DatabaseTypeConverters.fromTimestamp(dto.dueDate);
+        entity.referenceId = dto.referenceId;
+        entity.nic = dto.nic;
+        entity.trainId = dto.trainId;
+        entity.passengersCount = dto.passengersCount;
+        entity.totalAmount = dto.totalAmount;
+        entity.date = dto.date;
         entity.status = ReservationStatus.PENDING; // set default state
         return entity;
     }
 
     public String getDueDateAsString(){
-        return dueDate == null ? null : DatabaseTypeConverters.dateToString(dueDate);
+        return date == null ? null : DatabaseTypeConverters.dateToString(date);
     }
 
 }

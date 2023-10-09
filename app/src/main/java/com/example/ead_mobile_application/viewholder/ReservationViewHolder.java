@@ -52,7 +52,7 @@ public class ReservationViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void setData(ReservationEntity entity, ItemClickListener clickListener){
-        tvTitle.setText(entity.title);
+        tvTitle.setText(entity.referenceId);
         tvDueDate.setText(entity.getDueDateAsString());
         setTaskStatus(entity.status);
         setClickListener(clickListener);

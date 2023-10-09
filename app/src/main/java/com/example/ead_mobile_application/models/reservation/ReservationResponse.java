@@ -4,6 +4,6 @@ import java.util.List;
 
 public class ReservationResponse {
     public boolean success;
-    public List<ReservationDto> tasks;
+    public List<ReservationDto> reservations;
 
 }

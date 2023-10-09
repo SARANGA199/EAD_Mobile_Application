@@ -1,5 +1,7 @@
 package com.example.ead_mobile_application.managers;
 
+import android.content.Context;
+
 import androidx.room.Room;
 
 import com.example.ead_mobile_application.models.database.AppDatabase;
@@ -7,7 +9,7 @@ import com.example.ead_mobile_application.models.database.AppDatabase;
 public class DatabaseManager {
 
     private static DatabaseManager singleton;
-    private final String databaseName = "appdb";
+    private final String databaseName = "db";
     private ContextManager contextManager;
     private AppDatabase database;
     public static DatabaseManager getInstance(){
@@ -18,10 +20,15 @@ public class DatabaseManager {
 
     private DatabaseManager(){
         contextManager = ContextManager.getInstance();
-        database = Room.databaseBuilder(
+        Context applicationContext = contextManager.getApplicationContext();
+        if (applicationContext != null) {
+            database = Room.databaseBuilder(
                 contextManager.getApplicationContext(),
                 AppDatabase.class,
                 databaseName).build();
+        } else {
+            throw new IllegalStateException("Application context is null. Unable to create database.");
+        }
     }
 
     public AppDatabase db(){

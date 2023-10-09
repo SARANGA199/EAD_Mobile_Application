@@ -1,17 +1,17 @@
-package com.example.ead_mobile_application.manager;
+package com.example.ead_mobile_application.managers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.core.util.Consumer;
 
 
-import com.example.ead_mobile_application.Home;
-import com.example.ead_mobile_application.model.login.LoginRequestBody;
-import com.example.ead_mobile_application.model.login.LoginResponse;
-import com.example.ead_mobile_application.model.login.LoginService;
+import com.example.ead_mobile_application.managers.ContextManager;
+import com.example.ead_mobile_application.managers.NetworkManager;
+import com.example.ead_mobile_application.models.login.LoginRequestBody;
+import com.example.ead_mobile_application.models.login.LoginResponse;
+import com.example.ead_mobile_application.models.login.LoginService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +31,7 @@ public class LoginManager {
     }
 
     private LoginManager() {
-        loginService = NetworkManager.getInstance().createService(LoginService.class);
+        loginService = com.example.ead_mobile_application.managers.NetworkManager.getInstance().createService(LoginService.class);
     }
 
     public Boolean validateCredentials(String nic, String password) {
@@ -67,7 +67,7 @@ public class LoginManager {
                                 System.out.println("Name: " + loginResponse.getName());
                                 System.out.println("Email: " + loginResponse.getEmail());
 
-                                Context context = ContextManager.getInstance().getApplicationContext();
+                                Context context = com.example.ead_mobile_application.managers.ContextManager.getInstance().getApplicationContext();
                                 //add toasts messages login is successful
                                 Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show();
 
@@ -103,7 +103,7 @@ public class LoginManager {
     }
 
     public void setLoggedInState(boolean isLoggedIn) {
-        Context context = ContextManager.getInstance().getApplicationContext();
+        Context context = com.example.ead_mobile_application.managers.ContextManager.getInstance().getApplicationContext();
         SharedPreferences.Editor editor = context.getSharedPreferences(loginStateFile, Context.MODE_PRIVATE).edit();
         editor.putBoolean(isLoggedInKey, isLoggedIn);
         editor.apply();

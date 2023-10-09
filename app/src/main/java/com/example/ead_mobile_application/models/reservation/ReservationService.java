@@ -4,7 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface ReservationService {
-    @GET("tasks")
-    Call<ReservationResponse> tasks();
+    @GET("Reservation")
+    Call<ReservationResponse> reservation();
 
 }

@@ -14,10 +14,10 @@ public interface ReservationDao {
     List<ReservationEntity> getAll();
 
     @Insert
-    void insertAll(List<ReservationEntity> tasks);
+    void insertAll(List<ReservationEntity> Reservations);
 
     @Update
-    void update(ReservationEntity task);
+    void update(ReservationEntity Reservation);
 
     @Query("DELETE FROM ReservationEntity")
     void removeAll();

@@ -20,7 +20,7 @@ public class ReservationManager {
 
     private static ReservationManager singleton;
     private DatabaseManager databaseManager;
-    private ReservationService taskService;
+    private ReservationService reservationService;
 
     public static ReservationManager getInstance(){
         if (singleton == null)
@@ -30,32 +30,32 @@ public class ReservationManager {
 
     private ReservationManager(){
         databaseManager = DatabaseManager.getInstance();
-        taskService = NetworkManager.getInstance().createService(ReservationService.class);
+        reservationService = NetworkManager.getInstance().createService(ReservationService.class);
     }
 
-    private void saveServerReservations(List<ReservationDto> serverTasks){
+    private void saveServerReservations(List<ReservationDto>reservations){
         databaseManager.db().ReservationDao().removeAll();
 
         List<ReservationEntity> tempEntities = new ArrayList<>();
-        for(ReservationDto t : serverTasks){
+        for(ReservationDto t : reservations){
             tempEntities.add(ReservationEntity.fromDto(t));
         }
 
         databaseManager.db().ReservationDao().insertAll(tempEntities);
     }
 
-    private void getReservationsFromServer(Consumer<List<ReservationDto>> onTasksLoaded, Consumer<String> onError) {
+    private void getReservationsFromServer(Consumer<List<ReservationDto>> onReservationsLoaded, Consumer<String> onError) {
         if (!NetworkManager.getInstance().isNetworkAvailable()){
             onError.accept("No internet connection");
             return;
         }
 
         try{
-            Response<ReservationResponse> response = taskService.tasks().execute();
-            ReservationResponse taskResponse = response.body();
+            Response<ReservationResponse> response = reservationService.reservation().execute();
+            ReservationResponse reservationResponse = response.body();
 
-            if (taskResponse.success){
-                onTasksLoaded.accept(taskResponse.tasks);
+            if (reservationResponse.success){
+                onReservationsLoaded.accept(reservationResponse.reservations);
             }
             else{
                 onError.accept("Retrieving tasks list from server failed");
@@ -71,17 +71,17 @@ public class ReservationManager {
      * Check if the local db has any tasks, if so return them. Otherwise,
      * fetch new list from the server.
      */
-    public void getReservations(Consumer<List<ReservationEntity>> onTasksLoaded, Consumer<String> onError) {
+    public void getReservations(Consumer<List<ReservationEntity>> onReservationsLoaded, Consumer<String> onError) {
 
         new Thread(() -> {
             ReservationDao dao = databaseManager.db().ReservationDao();
-            List<ReservationEntity> dbTasks = dao.getAll();
+            List<ReservationEntity> dbReservations = dao.getAll();
 
-            if (dbTasks != null && dbTasks.size() > 0){
-                MainThreadHelper.onMainThread(() -> onTasksLoaded.accept(dbTasks));
+            if (dbReservations != null && dbReservations.size() > 0){
+                MainThreadHelper.onMainThread(() -> onReservationsLoaded.accept(dbReservations));
             }
             else{
-                // TODO: Consume the API, store the tasks locally, and call onTasksLoaded
+                // TODO: Consume the API, store the tasks locally, and call onReservationsLoaded
 
                 if (!NetworkManager.getInstance().isNetworkAvailable()){
                     MainThreadHelper.onMainThread(() -> onError.accept("No internet connection"));
@@ -90,8 +90,8 @@ public class ReservationManager {
                 getReservationsFromServer(
                         serverTasks -> {
                             saveServerReservations(serverTasks);
-                            List<ReservationEntity> allTasks = dao.getAll();
-                            MainThreadHelper.onMainThread(() -> onTasksLoaded.accept(allTasks));
+                            List<ReservationEntity> allReservations = dao.getAll();
+                            MainThreadHelper.onMainThread(() -> onReservationsLoaded.accept(allReservations));
                         },
                         error -> MainThreadHelper.onMainThread(() -> onError.accept(error))
                 );
@@ -110,15 +110,15 @@ public class ReservationManager {
         }
     }
 
-    public void updateReservationStatus(ReservationEntity task, ReservationStatus nextStatus, Consumer<ReservationEntity> onSuccess, Consumer<String> onError){
+    public void updateReservationStatus(ReservationEntity reservation, ReservationStatus nextStatus, Consumer<ReservationEntity> onSuccess, Consumer<String> onError){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                task.status = nextStatus;
+                reservation.status = nextStatus;
 
                 try{
-                    databaseManager.db().ReservationDao().update(task);
-                    MainThreadHelper.onMainThread(() -> onSuccess.accept(task));
+                    databaseManager.db().ReservationDao().update(reservation);
+                    MainThreadHelper.onMainThread(() -> onSuccess.accept(reservation));
                 }
                 catch(Exception e){
                     Log.e("Update", e.toString());

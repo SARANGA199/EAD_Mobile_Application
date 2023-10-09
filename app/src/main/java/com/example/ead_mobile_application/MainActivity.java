@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.ead_mobile_application.adapter.ReservationListAdapter;
+import com.example.ead_mobile_application.managers.ContextManager;
 import com.example.ead_mobile_application.managers.ReservationManager;
 import com.example.ead_mobile_application.models.reservation.ReservationEntity;
 import com.example.ead_mobile_application.models.reservation.ReservationStatus;
@@ -30,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        ContextManager.getInstance().setApplicationContext(getApplicationContext());
+        setContentView(R.layout.activity_main);
+
         toolbar = findViewById(R.id.toolbar);
         loadingView = findViewById(R.id.loadingView);
         recyclerView = findViewById(R.id.recyclerView);
@@ -40,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         reservationManager = ReservationManager.getInstance();
         loadData();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
     }
     private void setIsLoading(boolean isLoading){
         loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
@@ -74,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleItemClick(int position){
-        ReservationEntity task = adapter.getReservationAt(position);
-        ReservationStatus nextStatus = reservationManager.getNextReservationStatus(task.status);
+        ReservationEntity reservation = adapter.getReservationAt(position);
+        ReservationStatus nextStatus = reservationManager.getNextReservationStatus(reservation.status);
 
-        Log.d("Click", "You clicked " + task.title);
+        Log.d("Click", "You clicked " + reservation.referenceId);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -92,17 +96,17 @@ public class MainActivity extends AppCompatActivity {
             builder.setTitle("Change task status");
             builder.setMessage("Do you want to change the status to " + nextStatusName);
             builder.setNegativeButton("NO", null);
-            builder.setPositiveButton("OK", (dialog, which) -> handleChangeItemStatus(task, nextStatus, position));
+            builder.setPositiveButton("OK", (dialog, which) -> handleChangeItemStatus(reservation, nextStatus, position));
         }
 
         builder.show();
     }
 
-    private void handleChangeItemStatus(ReservationEntity task, ReservationStatus nextStatus, int position){
+    private void handleChangeItemStatus(ReservationEntity reservation, ReservationStatus nextStatus, int position){
         reservationManager.updateReservationStatus(
-                task,
+                reservation,
                 nextStatus,
-                newTask -> adapter.updateReservationAt(position, newTask),
+                newReservation -> adapter.updateReservationAt(position, newReservation),
                 this::handleError);
     }
 
