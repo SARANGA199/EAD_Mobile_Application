@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".WelcomeScreen"
+            android:exported="false" />
+        <activity
+            android:name=".AvailableTrainList"
+            android:exported="false" />
+        <activity
             android:name=".SearchTrain"
             android:exported="false" />
         <activity
