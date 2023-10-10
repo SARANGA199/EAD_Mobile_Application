@@ -24,116 +24,18 @@
 
 
             <TextView
-
+                android:id="@+id/trainName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reference Id:"
+                android:text="Train"
                 android:textStyle="bold"
                 android:fontFamily="@font/calibri"
                 android:textSize="22dp"
                 android:gravity="center"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="70dp"
                 android:layout_marginBottom="20dp"
                 android:textColor="#000000"/>
-
-            <TextView
-                android:id="@+id/reference_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="002M"
-                android:textSize="16sp"
-                android:textColor="#8a8a8a"
-                android:layout_marginStart="4dp"/>
-
-
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NIC:"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/gotham"
-                android:layout_marginEnd="10dp"
-                />
-
-            <TextView
-                android:id="@+id/nic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="99064257815V"
-                android:textSize="16sp"
-                android:textColor="#8a8a8a"
-                android:layout_marginStart="4dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TrainId:"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/gotham"
-                android:layout_marginEnd="10dp"
-                />
-
-            <TextView
-                android:id="@+id/trainId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="99064"
-                android:textSize="16sp"
-                android:textColor="#8a8a8a"
-                android:layout_marginStart="4dp"/>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date:"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/gotham"
-                android:layout_marginEnd="10dp"
-                />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="99064"
-                android:textSize="16sp"
-                android:textColor="#8a8a8a"
-                android:layout_marginStart="4dp"/>
-
-
-        </LinearLayout>
-
 
         <!-- Departure and Arrival Cities -->
         <LinearLayout
@@ -149,7 +51,7 @@
                 android:textSize="16sp"
                 android:fontFamily="@font/gotham"
                 android:textStyle="bold"
-                />
+               />
 
             <TextView
                 android:id="@+id/departure"
@@ -211,59 +113,59 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
+            android:text="Arrival Time:"
+            android:textStyle="bold"
+            android:fontFamily="@font/gotham"
+            android:layout_marginEnd="5dp"
+            android:textSize="16sp"
+            />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Arrival Time:"
-                android:textStyle="bold"
-                android:fontFamily="@font/gotham"
-                android:layout_marginEnd="5dp"
-                android:textSize="16sp"
-                />
-
-            <TextView
-                android:id="@+id/arrivalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12:30 PM"
-                android:textSize="16sp"
-                android:textColor="#8a8a8a"
-                android:layout_marginStart="4dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/arrivalTime"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
+            android:text="12:30 PM"
+            android:textSize="16sp"
+            android:textColor="#8a8a8a"
+            android:layout_marginStart="4dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Trip Duration(Hours):"
-                android:textStyle="bold"
-                android:fontFamily="@font/gotham"
-                android:layout_marginEnd="5dp"
-                android:textSize="16sp"
-                />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tripTimeDuration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3.5 hours"
-                android:textSize="16sp"
-                android:textColor="#8a8a8a"
-                android:layout_marginStart="4dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trip Duration(Hours):"
+            android:textStyle="bold"
+            android:fontFamily="@font/gotham"
+            android:layout_marginEnd="5dp"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tripTimeDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.5 hours"
+            android:textSize="16sp"
+            android:textColor="#8a8a8a"
+            android:layout_marginStart="4dp"/>
+
+    </LinearLayout>
 
         <!-- Trip Duration, Requested Seats, and Available Seats -->
         <LinearLayout
@@ -280,12 +182,12 @@
                 android:textStyle="bold"
                 android:fontFamily="@font/gotham"
                 android:layout_marginEnd="5dp"
-                android:text="Number of Seats:"
+                android:text="Requested Seats:"
                 android:textSize="16sp"
                 />
 
             <TextView
-                android:id="@+id/seatCount"
+                android:id="@+id/requestedSeatCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
@@ -293,7 +195,24 @@
                 android:textColor="#8a8a8a"
                 android:layout_marginStart="4dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available Seats: "
+                android:textStyle="bold"
+                android:fontFamily="@font/gotham"
+                android:layout_marginStart="20dp"
+                android:textSize="16sp"
+                />
 
+            <TextView
+                android:id="@+id/availableSeatCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="48"
+                android:textSize="16sp"
+                android:textColor="#8a8a8a"
+                android:layout_marginStart="4dp"/>
         </LinearLayout>
 
         <!-- Amount and Book Ticket Button -->
@@ -301,7 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            >
+           >
 
             <TextView
 
@@ -324,36 +243,14 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"/>
 
-
+            <Button
+                android:id="@+id/book_ticket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book Ticket"
+                android:backgroundTint="#f5a622"
+                android:textColor="#ffffff"
+                android:textSize="16sp"/>
         </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        >
-
-        <Button
-            android:id="@+id/res_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:backgroundTint="#FF9800"
-            android:layout_marginEnd="120dp"
-            android:textColor="#ffffff"
-            android:textSize="16sp"/>
-
-        <Button
-            android:id="@+id/res_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete"
-            android:backgroundTint="#FF0000"
-            android:textColor="#ffffff"
-            android:textSize="16sp"/>
-
-    </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
