@@ -1,5 +1,6 @@
 package com.example.ead_mobile_application;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,26 @@ public class TrainAdapter extends RecyclerView.Adapter<TrainAdapter.ViewHolder> 
 			requestedSeatCount.setText(String.valueOf(item.getRequestedSeatCount()));
 			availableSeatCount.setText(String.valueOf(item.getAvailableSeatCount()));
 			amount.setText(String.valueOf(item.getAmount()));
+			bookTicket.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+					//move to the next activity
+					Intent intent = new Intent(v.getContext(), ReservationSummary.class);
+					intent.putExtra("trainName", item.getTrainName());
+					intent.putExtra("departure", item.getDeparture());
+					intent.putExtra("arrival", item.getArrival());
+					intent.putExtra("departureTime", item.getDepartureTime());
+					intent.putExtra("arrivalTime", item.getArrivalTime());
+					intent.putExtra("tripTimeDuration", String.valueOf(item.getTripTimeDuration()));
+					intent.putExtra("requestedSeatCount", String.valueOf(item.getRequestedSeatCount()));
+					intent.putExtra("amount", String.valueOf(item.getAmount()));
+
+					//start the activity
+					v.getContext().startActivity(intent);
+
+				}});
+
 		}
 	}
 
