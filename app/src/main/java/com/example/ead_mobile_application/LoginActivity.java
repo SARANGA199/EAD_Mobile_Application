@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.ead_mobile_application.manager.ContextManager;
 import com.example.ead_mobile_application.manager.LoginManager;
 import com.example.ead_mobile_application.R.id;
+import com.example.ead_mobile_application.model.login.LoginResponse;
 
 public class LoginActivity extends AppCompatActivity {
 	private EditText etNic;
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 		forgotPassword.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent home = new Intent(getApplicationContext(),Home.class);
+				Intent home = new Intent(getApplicationContext(),UserProfile.class);
 				startActivity(home);
 			}
 		});
@@ -84,14 +85,16 @@ public class LoginActivity extends AppCompatActivity {
 		loginManager.login(
 				nic,
 				password,
-				() -> handleLoginSuccess(),
+				loginResponse -> {
+					handleLoginSuccess(loginResponse);
+				},
 				error -> handleLoginFailed(error));
 	}
 
-	private void handleLoginSuccess() {
+	private void handleLoginSuccess(LoginResponse loginResponse) {
 		loginManager.setLoggedInState(true);
+		loginManager.setUserDetails(loginResponse);
 		checkLoginState();
-
 	}
 
 	private void handleLoginFailed(String error) {
