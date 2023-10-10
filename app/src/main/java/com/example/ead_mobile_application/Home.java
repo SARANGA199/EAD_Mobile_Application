@@ -27,6 +27,13 @@ public class Home extends AppCompatActivity {
 			finish();
 		});
 
+		cardView2.setOnClickListener(v -> {
+			//navigate to login screen
+			Intent reservation = new Intent(Home.this, Reservations.class);
+			startActivity(reservation);
+
+		});
+
 
 
 	}

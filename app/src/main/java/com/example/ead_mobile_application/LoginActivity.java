@@ -17,8 +17,10 @@ import com.example.ead_mobile_application.R.id;
 public class LoginActivity extends AppCompatActivity {
 	private EditText etNic;
 	private EditText etPassword;
+	private  TextView forgotPassword;
 	private Button btnLogin;
 	private LoginManager loginManager;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 		etNic = findViewById(id.user_nic);
 		etPassword = findViewById(id.user_password);
 		btnLogin = findViewById(id.btn_login);
+		forgotPassword = findViewById(id.forgot_password);
 
 		//To show the sign up button
 		signUpText.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +44,14 @@ public class LoginActivity extends AppCompatActivity {
 			}
 		});
 
+		//navigate to home page
+		forgotPassword.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent home = new Intent(getApplicationContext(),Home.class);
+				startActivity(home);
+			}
+		});
 
 
 		txtSignUp.setOnClickListener(new View.OnClickListener() {
