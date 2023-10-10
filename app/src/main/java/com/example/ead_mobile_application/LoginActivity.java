@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 		ContextManager.getInstance().setApplicationContext(getApplicationContext());
 		loginManager = LoginManager.getInstance();
 
-		//checkLoginState();
+		checkLoginState();
 
 	}
 

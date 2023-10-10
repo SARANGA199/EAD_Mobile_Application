@@ -73,6 +73,8 @@ public class LoginManager {
 
                                 System.out.print("Navigate to home");
 
+                                onSuccess.run();
+
 
 
 

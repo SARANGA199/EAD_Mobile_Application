@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -22,6 +25,10 @@ public class NetworkManager {
     }
 
     private NetworkManager() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         //TODO: Setup Retrofit
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
