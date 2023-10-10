@@ -77,7 +77,6 @@ public class LoginManager {
                                 onSuccess.accept(loginResponse);
 
 
-
                             } else {
                                 onError.accept("Unknown error occurred while logging in");
                             }

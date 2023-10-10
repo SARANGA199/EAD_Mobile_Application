@@ -16,8 +16,8 @@ public class Home extends AppCompatActivity {
 	private CardView cardView1;
 	private CardView cardView2;
 
-	private Button logoutButton;
-	private Button userProfileButton;
+	private Button logout;
+	private Button userProfile;
 
 	private LoginManager loginManager;
 	private final String loginStateFile = "loginstate";
@@ -29,14 +29,14 @@ public class Home extends AppCompatActivity {
 
 		cardView1 = findViewById(R.id.cardView);
 		cardView2 = findViewById(R.id.cardView2);
-		logoutButton = findViewById(R.id.logoutButton);
-		userProfileButton = findViewById(R.id.userProfileButton);
+		logout = findViewById(R.id.logoutButton);
+		userProfile = findViewById(R.id.userProfileButton);
 
 		cardView1.setOnClickListener(v -> {
 			//navigate to login screen
 			Intent reservation = new Intent(Home.this, SearchTrain.class);
 			startActivity(reservation);
-			finish();
+
 		});
 
 		cardView2.setOnClickListener(v -> {
@@ -46,16 +46,16 @@ public class Home extends AppCompatActivity {
 
 		});
 
-		logoutButton.setOnClickListener(v -> {
+		logout.setOnClickListener(v -> {
 			loginManager = LoginManager.getInstance();
 			loginManager.logout();
 		});
 
-		userProfileButton.setOnClickListener(v -> {
+		userProfile.setOnClickListener(v -> {
 			//navigate to login screen
 			Intent reservation = new Intent(Home.this, UserProfile.class);
 			startActivity(reservation);
-			finish();
+
 		});
 
 
