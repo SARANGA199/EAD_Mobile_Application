@@ -13,25 +13,14 @@ public class RegisterManager {
     private DatabaseManager databaseManager;
     private ReservationService reservationService;
 
-    public static ReservationManager getInstance(){
+    public static RegisterManager getInstance(){
         if (singleton == null)
-            singleton = new ReservationManager();
+            singleton = new RegisterManager();
         return singleton;
     }
 
-    private ReservationManager(){
+    private RegisterManager(){
         databaseManager = DatabaseManager.getInstance();
         reservationService = NetworkManager.getInstance().createService(ReservationService.class);
-    }
-
-    private void saveServerReservations(List<ReservationDto> reservations){
-        databaseManager.db().ReservationDao().removeAll();
-
-        List<ReservationEntity> tempEntities = new ArrayList<>();
-        for(ReservationDto t : reservations){
-            tempEntities.add(ReservationEntity.fromDto(t));
-        }
-
-        databaseManager.db().ReservationDao().insertAll(tempEntities);
     }
 }
