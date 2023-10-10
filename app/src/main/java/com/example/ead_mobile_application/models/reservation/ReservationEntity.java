@@ -9,7 +9,7 @@ import com.example.ead_mobile_application.utilities.DatabaseTypeConverters;
 
 import java.util.Date;
 
-@Entity
+@Entity(tableName = "reservations")
 public class ReservationEntity {
 
     @PrimaryKey(autoGenerate = true)
