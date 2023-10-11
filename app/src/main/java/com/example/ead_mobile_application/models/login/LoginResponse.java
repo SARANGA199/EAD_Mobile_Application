@@ -7,6 +7,8 @@ public class LoginResponse {
     private String password;
     private boolean is_active;
     private int user_role;
+
+    private String token;
     private String errorMessage;
 
     public String getNic() {
@@ -27,6 +29,14 @@ public class LoginResponse {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public void setEmail(String email) {

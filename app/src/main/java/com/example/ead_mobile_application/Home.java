@@ -5,12 +5,22 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.example.ead_mobile_application.manager.LoginManager;
 
 public class Home extends AppCompatActivity {
 
 	//cardView variables
-	CardView cardView1;
-	CardView cardView2;
+	private CardView cardView1;
+	private CardView cardView2;
+
+	private Button logout;
+	private Button userProfile;
+
+	private LoginManager loginManager;
+	private final String loginStateFile = "loginstate";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +29,14 @@ public class Home extends AppCompatActivity {
 
 		cardView1 = findViewById(R.id.cardView);
 		cardView2 = findViewById(R.id.cardView2);
+		logout = findViewById(R.id.logoutButton);
+		userProfile = findViewById(R.id.userProfileButton);
 
 		cardView1.setOnClickListener(v -> {
 			//navigate to login screen
 			Intent reservation = new Intent(Home.this, SearchTrain.class);
 			startActivity(reservation);
-			finish();
+
 		});
 
 		cardView2.setOnClickListener(v -> {
@@ -34,6 +46,17 @@ public class Home extends AppCompatActivity {
 
 		});
 
+		logout.setOnClickListener(v -> {
+			loginManager = LoginManager.getInstance();
+			loginManager.logout();
+		});
+
+		userProfile.setOnClickListener(v -> {
+			//navigate to login screen
+			Intent reservation = new Intent(Home.this, UserProfile.class);
+			startActivity(reservation);
+
+		});
 
 
 	}

@@ -1,6 +1,7 @@
 package com.example.ead_mobile_application.managers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ public class LoginManager {
     }
 
     private LoginManager() {
-        loginService = com.example.ead_mobile_application.managers.NetworkManager.getInstance().createService(LoginService.class);
+        loginService = NetworkManager.getInstance().createService(LoginService.class);
     }
 
     public Boolean validateCredentials(String nic, String password) {
@@ -47,7 +48,7 @@ public class LoginManager {
     public void login(
             String nic,
             String password,
-            Runnable onSuccess,
+            Consumer<LoginResponse> onSuccess,
             Consumer<String> onError
     ) {
         if (!NetworkManager.getInstance().isNetworkAvailable()) {
@@ -67,13 +68,13 @@ public class LoginManager {
                                 System.out.println("Name: " + loginResponse.getName());
                                 System.out.println("Email: " + loginResponse.getEmail());
 
-                                Context context = com.example.ead_mobile_application.managers.ContextManager.getInstance().getApplicationContext();
+                                Context context = ContextManager.getInstance().getApplicationContext();
                                 //add toasts messages login is successful
                                 Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show();
 
                                 System.out.print("Navigate to home");
 
-
+                                onSuccess.accept(loginResponse);
 
 
                             } else {
@@ -103,7 +104,7 @@ public class LoginManager {
     }
 
     public void setLoggedInState(boolean isLoggedIn) {
-        Context context = com.example.ead_mobile_application.managers.ContextManager.getInstance().getApplicationContext();
+        Context context = ContextManager.getInstance().getApplicationContext();
         SharedPreferences.Editor editor = context.getSharedPreferences(loginStateFile, Context.MODE_PRIVATE).edit();
         editor.putBoolean(isLoggedInKey, isLoggedIn);
         editor.apply();
@@ -114,4 +115,27 @@ public class LoginManager {
         SharedPreferences prefs = context.getSharedPreferences(loginStateFile, Context.MODE_PRIVATE);
         return prefs.getBoolean(isLoggedInKey, false);
     }
+
+    public void setUserDetails(LoginResponse loginResponse) {
+        Context context = ContextManager.getInstance().getApplicationContext();
+        SharedPreferences.Editor editor = context.getSharedPreferences(loginStateFile, Context.MODE_PRIVATE).edit();
+        editor.putString("nic", loginResponse.getNic());
+        editor.putString("name", loginResponse.getName());
+        editor.putString("email", loginResponse.getEmail());
+        editor.putBoolean("is_active", loginResponse.getIsActive());
+        editor.putInt("user_role", loginResponse.getUser_role());
+        editor.apply();
+    }
+
+    public void logout() {
+        setLoggedInState(false);
+        Context context = ContextManager.getInstance().getApplicationContext();
+        SharedPreferences.Editor editor = context.getSharedPreferences(loginStateFile, Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
+
 }
