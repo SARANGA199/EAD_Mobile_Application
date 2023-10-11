@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="locations_array">
+        <item>Select Station</item>
+        <item>Matara</item>
+        <item>Galle</item>
+        <item>Kaluthara</item>
+        <item>Colombo</item>
+        <item>Kandy</item>
+        <item>Jaffna</item>
+    </string-array>
+</resources>
