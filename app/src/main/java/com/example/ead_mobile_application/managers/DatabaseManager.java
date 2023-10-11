@@ -9,7 +9,7 @@ import com.example.ead_mobile_application.models.database.AppDatabase;
 public class DatabaseManager {
 
     private static DatabaseManager singleton;
-    private final String databaseName = "db";
+    private final String databaseName = "app_db";
     private ContextManager contextManager;
     private AppDatabase database;
     public static DatabaseManager getInstance(){

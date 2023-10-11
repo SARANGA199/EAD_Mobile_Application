@@ -9,6 +9,7 @@ import com.example.ead_mobile_application.models.reservation.ReservationResponse
 import com.example.ead_mobile_application.models.reservation.ReservationService;
 import com.example.ead_mobile_application.models.reservation.ReservationStatus;
 import com.example.ead_mobile_application.utilities.MainThreadHelper;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,14 @@ public class ReservationManager {
         }
 
         try{
-            Response<ReservationResponse> response = reservationService.reservation().execute();
+
+            Response<ReservationResponse> response = reservationService.getReservations().execute();
             ReservationResponse reservationResponse = response.body();
 
-            if (reservationResponse.success){
-                onReservationsLoaded.accept(reservationResponse.reservations);
+            if (reservationResponse.isSuccess()){
+                //onReservationsLoaded.accept(reservationResponse.reservations);
+                List<ReservationDto> reservations = reservationResponse.getReservations();
+                onReservationsLoaded.accept(reservations);
             }
             else{
                 onError.accept("Retrieving tasks list from server failed");

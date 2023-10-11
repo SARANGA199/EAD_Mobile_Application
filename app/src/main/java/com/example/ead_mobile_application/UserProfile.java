@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.ead_mobile_application.manager.ContextManager;
+import com.example.ead_mobile_application.managers.ContextManager;
 
 public class UserProfile extends AppCompatActivity {
 

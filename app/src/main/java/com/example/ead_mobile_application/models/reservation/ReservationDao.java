@@ -10,7 +10,7 @@ import java.util.List;
 
 @Dao
 public interface ReservationDao {
-    @Query("SELECT * FROM ReservationEntity")
+    @Query("SELECT * FROM reservations")
     List<ReservationEntity> getAll();
 
     @Insert
@@ -19,7 +19,7 @@ public interface ReservationDao {
     @Update
     void update(ReservationEntity Reservation);
 
-    @Query("DELETE FROM ReservationEntity")
+    @Query("DELETE FROM reservations")
     void removeAll();
 
 }

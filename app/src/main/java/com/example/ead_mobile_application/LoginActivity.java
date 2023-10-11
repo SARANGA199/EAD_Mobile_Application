@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.example.ead_mobile_application.managers.ContextManager;
 import com.example.ead_mobile_application.managers.LoginManager;
 import com.example.ead_mobile_application.R.id;
-import com.example.ead_mobile_application.model.login.LoginResponse;
+import com.example.ead_mobile_application.models.login.LoginResponse;
 
 public class LoginActivity extends AppCompatActivity {
 	private EditText etNic;

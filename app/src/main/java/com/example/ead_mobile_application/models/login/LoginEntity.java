@@ -1,32 +1,32 @@
 package com.example.ead_mobile_application.models.login;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.ead_mobile_application.models.reservation.ReservationDto;
-import com.example.ead_mobile_application.models.reservation.ReservationEntity;
-import com.example.ead_mobile_application.models.reservation.ReservationStatus;
-
+@Entity(tableName = "login")
 public class LoginEntity {
 
+    @PrimaryKey
+    @NonNull
+    public String nic;
+    public String name;
+    public String email;
+    public String password;
+    public boolean is_active;
+    public int user_role;
+    public String token;
+    public String errorMessage;
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-    private String nic;
-    private String name;
-    private String email;
-    private String password;
-    private boolean is_active;
-    private int user_role;
-    private String errorMessage;
-
-    public static LoginEntity fromDto(LogingDto dto){
+    public static LoginEntity fromDto(LoginDto dto){
         LoginEntity entity = new LoginEntity();
-        entity.id = 0; // room db will autogenerate for us after insert()
         entity.nic = dto.nic;
-        entity.email = dto.name;
+        entity.name = dto.name;
+        entity.email = dto.email;
         entity.password = dto.password;
         entity.is_active = dto.is_active;
         entity.user_role = dto.user_role;
+        entity.token =dto.token;
         entity.errorMessage = dto.errorMessage; // set default state
         return entity;
     }

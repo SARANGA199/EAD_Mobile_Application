@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.ead_mobile_application.manager.LoginManager;
+import com.example.ead_mobile_application.managers.LoginManager;
 
 public class Home extends AppCompatActivity {
 

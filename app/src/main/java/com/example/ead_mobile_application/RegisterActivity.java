@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.ead_mobile_application.manager.ContextManager;
-import com.example.ead_mobile_application.manager.RegisterManager;
+import com.example.ead_mobile_application.managers.ContextManager;
+import com.example.ead_mobile_application.managers.RegisterManager;
 
 public class RegisterActivity extends AppCompatActivity {
 

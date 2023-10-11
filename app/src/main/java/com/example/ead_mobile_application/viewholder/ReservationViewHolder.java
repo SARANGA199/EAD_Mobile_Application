@@ -23,9 +23,9 @@ public class ReservationViewHolder extends RecyclerView.ViewHolder{
     public ReservationViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        tvTitle = itemView.findViewById(R.id.tvTitle);
-        tvDueDate = itemView.findViewById(R.id.tvDueDate);
-        tvStatus = itemView.findViewById(R.id.tvStatus);
+        tvTitle = itemView.findViewById(R.id.trainId);
+        tvDueDate = itemView.findViewById(R.id.date);
+        tvStatus = itemView.findViewById(R.id.arrival);
     }
 
     private void setStatusUI(String status, @DrawableRes int drawableResource){
