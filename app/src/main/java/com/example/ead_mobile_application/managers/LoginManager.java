@@ -1,5 +1,6 @@
 package com.example.ead_mobile_application.managers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -63,6 +64,7 @@ public class LoginManager {
 
         LoginRequestBody body = new LoginRequestBody(nic, password);
         loginService.login(body).enqueue(new Callback<LoginResponse>() {
+            @SuppressLint("StaticFieldLeak")
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {

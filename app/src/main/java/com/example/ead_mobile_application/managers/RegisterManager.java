@@ -1,9 +1,8 @@
 package com.example.ead_mobile_application.managers;
 
-import com.example.ead_mobile_application.managers.NetworkManager;
-import com.example.ead_mobile_application.model.register.RegisterRequestBody;
-import com.example.ead_mobile_application.model.register.RegisterResponse;
-import com.example.ead_mobile_application.model.register.RegisterService;
+import com.example.ead_mobile_application.models.register.RegisterRequestBody;
+import com.example.ead_mobile_application.models.register.RegisterResponse;
+import com.example.ead_mobile_application.models.register.RegisterService;
 import androidx.core.util.Consumer;
 import retrofit2.Call;
 import retrofit2.Callback;

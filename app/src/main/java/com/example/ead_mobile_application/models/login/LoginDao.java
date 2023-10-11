@@ -5,10 +5,16 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 @Dao
 public interface LoginDao {
     @Query("SELECT * FROM login")
-    LoginEntity get();
+    List<LoginEntity> get();
+
+    //get the user and limit it to 1
+    @Query("SELECT * FROM login LIMIT 1")
+    LoginEntity getOne();
 
     @Insert
     void insert(LoginEntity login);
