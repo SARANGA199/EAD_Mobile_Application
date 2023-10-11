@@ -37,6 +37,7 @@ public class Home extends AppCompatActivity {
 			Intent reservation = new Intent(Home.this, SearchTrain.class);
 			startActivity(reservation);
 
+
 		});
 
 		cardView2.setOnClickListener(v -> {

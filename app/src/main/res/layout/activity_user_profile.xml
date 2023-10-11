@@ -154,7 +154,7 @@
                         android:drawableStart="@drawable/verify"
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
-                        android:text="Active 🟢 🔴"
+                        android:text="Active 🟢 "
                         android:textAlignment="viewStart" />
 
 
