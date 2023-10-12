@@ -3,42 +3,31 @@ package com.example.ead_mobile_application;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.Spinner;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.ead_mobile_application.managers.ContextManager;
-import com.example.ead_mobile_application.managers.TrainManager;
+import com.example.ead_mobile_application.managers.ReservationManager;
+import com.example.ead_mobile_application.models.reservation.ReservationResponseBody;
+import com.example.ead_mobile_application.models.reservation.UpdateReservationBody;
 
-public class SearchTrain extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
+
+public class UpdateReservation extends AppCompatActivity {
+
 	private Calendar calendar;
 	private EditText dateEditText;
 	private Spinner destinationSpinner;
@@ -48,12 +37,21 @@ public class SearchTrain extends AppCompatActivity {
 
 	private String mongoDBDateTime;
 
-	private TrainManager trainManager;
+	ReservationResponseBody reservation;
+	private ReservationManager reservationManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search_train);
+		setContentView(R.layout.activity_update_reservation);
+
+		//get the data from the intent
+		Intent intent = getIntent();
+		if (intent != null) {
+
+			 reservation = (ReservationResponseBody) intent.getSerializableExtra("updateBody");
+			System.out.println("update rservation 1234 "+reservation.nic);
+		}
 
 		dateEditText = findViewById(R.id.date_picker_edit_text);
 		destinationSpinner = findViewById(R.id.destination_spinner);
@@ -61,11 +59,17 @@ public class SearchTrain extends AppCompatActivity {
 		numberOfSeats = findViewById(R.id.num_of_seats_edit_text);
 		searchButton = findViewById(R.id.btn_search_train);
 
+		//set the data to the fields
+		dateEditText.setText(reservation.date);
+		numberOfSeats.setText(String.valueOf(reservation.passengersCount));
+		// Set the initial selection to as string
+
+
 
 		// Set up the Spinners
-		setupSpinners();
+	    setupSpinners();
 		// Set up the date picker
-		calendar = Calendar.getInstance();
+	    calendar = Calendar.getInstance();
 
 		// Set the date and time to now
 		dateEditText.setOnClickListener(new View.OnClickListener() {
@@ -75,10 +79,10 @@ public class SearchTrain extends AppCompatActivity {
 			}
 		});
 
-		searchButton.setOnClickListener(view -> searchTrain());
-
 		ContextManager.getInstance().setApplicationContext(this.getApplicationContext());
-		trainManager = TrainManager.getInstance();
+		reservationManager = ReservationManager.getInstance();
+
+		searchButton.setOnClickListener(view -> updateReservation());
 	}
 
 	private void setupSpinners() {
@@ -95,12 +99,26 @@ public class SearchTrain extends AppCompatActivity {
 		destinationSpinner.setAdapter(adapter);
 		fromSpinner.setAdapter(adapter);
 
-		// Set the initial selection to the first item (Select Destination)
-		destinationSpinner.setSelection(0);
-		fromSpinner.setSelection(0);
+		// Get the values from the previous page
+		String previousDestinationValue = reservation.arrival;
+		String previousFromValue = reservation.depature;
 
-		// Set up listeners to handle Spinner selections
-		destinationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		// Set the initial selection for the destinationSpinner
+		int destinationPosition = adapter.getPosition(previousDestinationValue);
+		if (destinationPosition >= 0) {
+			destinationSpinner.setSelection(destinationPosition);
+		} else {
+
+		}
+
+		// Set the initial selection for the fromSpinner
+		int fromPosition = adapter.getPosition(previousFromValue);
+		if (fromPosition >= 0) {
+			fromSpinner.setSelection(fromPosition);
+		} else {
+		}
+
+		destinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				String selectedDestination = parentView.getItemAtPosition(position).toString();
@@ -111,11 +129,11 @@ public class SearchTrain extends AppCompatActivity {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
-				// Handle nothing selected if needed
+
 			}
 		});
 
-		fromSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		fromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				String selectedFrom = parentView.getItemAtPosition(position).toString();
@@ -156,7 +174,7 @@ public class SearchTrain extends AppCompatActivity {
 						// Format the date and time as MongoDB format
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 						sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-						 mongoDBDateTime = sdf.format(calendar.getTime());
+						mongoDBDateTime = sdf.format(calendar.getTime());
 
 						//display the date on the edit text
 						String dateNow = mongoDBDateTime.substring(0,10);
@@ -184,7 +202,7 @@ public class SearchTrain extends AppCompatActivity {
 		datePickerDialog.show();
 	}
 
-	private void searchTrain() {
+	private void updateReservation() {
 		String destination = destinationSpinner.getSelectedItem().toString();
 		String from = fromSpinner.getSelectedItem().toString();
 		String date = dateEditText.getText().toString();
@@ -210,39 +228,52 @@ public class SearchTrain extends AppCompatActivity {
 			from = "";
 		}
 
-		trainManager.searchTrain(from, destination, seatsInt, mongoDBDateTime, trainResponse -> handleTrainSuccess(trainResponse), error -> handleTrainFailed(error));
 
+		UpdateReservationBody updateReservationBody = new UpdateReservationBody(seatsInt,mongoDBDateTime ,from ,destination );
 
+		//send the data to the backend
+		reservationManager.updateReservation(reservation.id ,updateReservationBody,(message) -> handleReUpdateSuccess(message), error -> handleReUpdateFailed(error));
 	}
 
-	private void handleTrainSuccess (List<TrainDetails> trainResponse) {
-		//display toast message
-		Toast.makeText(getApplicationContext(), "Train found continue for booking", Toast.LENGTH_SHORT).show();
+	private void handleReUpdateSuccess(String message) {
 
-		if (trainResponse.size() == 0) {
+		if (message.equals("Reservation updated successfully !")) {
 			//display toast message
-			Toast.makeText(getApplicationContext(), "No train found", Toast.LENGTH_SHORT).show();
-			return;
+			Toast.makeText(getApplicationContext(), "Reservation Updated", Toast.LENGTH_SHORT).show();
+			LayoutInflater inflater = getLayoutInflater();
+			View layout = inflater.inflate(R.layout.success_toast_layout, null);
+
+			TextView text = layout.findViewById(R.id.toast_message_success);
+			text.setText("Reservation Updated Successfully");
+
+			Toast toast = new Toast(getApplicationContext());
+			toast.setDuration(Toast.LENGTH_SHORT);
+			toast.setView(layout);
+
+			toast.show();
+			//go back to the main activity
+			Intent intent = new Intent(this, Reservations.class);
+			startActivity(intent);
 		}
 
-		// Go to the next activity on the main UI thread
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				displayAvailableTrains(trainResponse);
-			}
-		});
+		//display toast message color will be red
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.custom_toast_layout, null);
+
+		TextView text = layout.findViewById(R.id.toast_message);
+		text.setText(message);
+
+		Toast toast = new Toast(getApplicationContext());
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+
+		toast.show();
 	}
 
-	private void handleTrainFailed (String error) {
+	private void handleReUpdateFailed(String error) {
 		//display toast message
-		Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+		System.out.println("Reservation Update Failed: " + error);
 	}
 
-	private void displayAvailableTrains(List<TrainDetails> trainResponse) {
-		//go to the next activity
-		Intent intent = new Intent(SearchTrain.this, AvailableTrainList.class);
-		intent.putExtra("trainResponse", (Serializable) trainResponse);
-		startActivity(intent);
-	}
 }
