@@ -19,6 +19,7 @@ public class ReservationSummary extends AppCompatActivity {
 	private TextView requestedSeatCount;
 
 	private TextView amount;
+	private TextView date;
 	private Button checkout;
 
 	@Override
@@ -33,6 +34,7 @@ public class ReservationSummary extends AppCompatActivity {
 		arrivalTime = findViewById(R.id.arrivalTime);
 		tripTimeDuration = findViewById(R.id.tripTimeDuration);
 		requestedSeatCount = findViewById(R.id.requestedSeatCount);
+		date = findViewById(R.id.date);
 		amount = findViewById(R.id.amount);
 		checkout = findViewById(R.id.btn_summary_train);
 
@@ -49,6 +51,7 @@ public class ReservationSummary extends AppCompatActivity {
 		String tripTimeDuration = intent.getStringExtra("tripTimeDuration");
 		String requestedSeatCount = intent.getStringExtra("requestedSeatCount");
 		String amount = intent.getStringExtra("amount");
+		String date = intent.getStringExtra("date");
 
 		// Set the text
 		this.trainName.setText(trainName);
@@ -59,6 +62,7 @@ public class ReservationSummary extends AppCompatActivity {
 		this.tripTimeDuration.setText(tripTimeDuration);
 		this.requestedSeatCount.setText(String.valueOf(requestedSeatCount));
 		this.amount.setText(String.valueOf(amount));
+		this.date.setText(date);
 
 		checkout.setOnClickListener(v -> {
 			//display a toast message

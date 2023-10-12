@@ -47,6 +47,7 @@ public class TrainAdapter extends RecyclerView.Adapter<TrainAdapter.ViewHolder> 
 		private TextView tripTimeDuration;
 		private TextView requestedSeatCount;
 		private TextView availableSeatCount;
+		private  TextView date;
 		private TextView amount;
 		private Button bookTicket;
 
@@ -60,6 +61,7 @@ public class TrainAdapter extends RecyclerView.Adapter<TrainAdapter.ViewHolder> 
 			tripTimeDuration = itemView.findViewById(R.id.tripTimeDuration);
 			requestedSeatCount = itemView.findViewById(R.id.requestedSeatCount);
 			availableSeatCount = itemView.findViewById(R.id.availableSeatCount);
+			date = itemView.findViewById(R.id.date);
 			amount = itemView.findViewById(R.id.amount);
 			bookTicket = itemView.findViewById(R.id.book_ticket);
 		}
@@ -73,6 +75,8 @@ public class TrainAdapter extends RecyclerView.Adapter<TrainAdapter.ViewHolder> 
 			tripTimeDuration.setText(String.valueOf(item.getTripTimeDuration()));
 			requestedSeatCount.setText(String.valueOf(item.getRequestedSeatCount()));
 			availableSeatCount.setText(String.valueOf(item.getAvailableSeatCount()));
+			//display only the date
+			date.setText(item.getDate().substring(0,10));
 			amount.setText(String.valueOf(item.getAmount()));
 			bookTicket.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -87,6 +91,7 @@ public class TrainAdapter extends RecyclerView.Adapter<TrainAdapter.ViewHolder> 
 					intent.putExtra("arrivalTime", item.getArrivalTime());
 					intent.putExtra("tripTimeDuration", String.valueOf(item.getTripTimeDuration()));
 					intent.putExtra("requestedSeatCount", String.valueOf(item.getRequestedSeatCount()));
+					intent.putExtra("date", String.valueOf(item.getDate().substring(0,10)));
 					intent.putExtra("amount", String.valueOf(item.getAmount()));
 
 					//start the activity

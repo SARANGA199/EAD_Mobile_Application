@@ -23,6 +23,7 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -241,8 +242,7 @@ public class SearchTrain extends AppCompatActivity {
 	private void displayAvailableTrains(List<TrainDetails> trainResponse) {
 		//go to the next activity
 		Intent intent = new Intent(SearchTrain.this, AvailableTrainList.class);
-		intent.putParcelableArrayListExtra("trainResponse", (ArrayList<? extends Parcelable>) trainResponse);
-		intent.putExtra("date", mongoDBDateTime);
+		intent.putExtra("trainResponse", (Serializable) trainResponse);
 		startActivity(intent);
 	}
 }
