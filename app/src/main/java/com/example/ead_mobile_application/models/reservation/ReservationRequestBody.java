@@ -8,15 +8,15 @@ public class ReservationRequestBody {
 	public int passengersCount;
 	public String date;
 	public double totalAmount;
-	public String departure;
+	public String depature;
 	public String arrival;
-	public String departureTime;
+	public String depatureTime;
 	public String arrivalTime;
 	public String averageTimeDuration;
 
 
 	public ReservationRequestBody(String referenceId, String nic, String trainId, int passengersCount, String date,
-			double totalAmount, String departure, String arrival, String departureTime, String arrivalTime,
+			double totalAmount, String depature, String arrival, String depatureTime, String arrivalTime,
 			String averageTimeDuration) {
 
 		this.referenceId = referenceId;
@@ -25,9 +25,9 @@ public class ReservationRequestBody {
 		this.passengersCount = passengersCount;
 		this.date = date;
 		this.totalAmount = totalAmount;
-		this.departure = departure;
+		this.depature = depature;
 		this.arrival = arrival;
-		this.departureTime = departureTime;
+		this.depatureTime = depatureTime;
 		this.arrivalTime = arrivalTime;
 		this.averageTimeDuration = averageTimeDuration;
 	}

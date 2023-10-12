@@ -1,5 +1,6 @@
 package com.example.ead_mobile_application;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ead_mobile_application.models.reservation.ReservationResponseBody;
+
 import java.util.List;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder>{
 
-	private List<ReservationDetails> reservationDetailsList;
+	private List<ReservationResponseBody> reservationDetailsList;
 
-	public ReservationAdapter(List<ReservationDetails> reservationDetailsList) {
+	public ReservationAdapter(List<ReservationResponseBody> reservationDetailsList) {
 		this.reservationDetailsList = reservationDetailsList;
 	}
 
@@ -28,7 +31,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-		ReservationDetails item = reservationDetailsList.get(position);
+		ReservationResponseBody item = reservationDetailsList.get(position);
 		holder.bind(item);
 	}
 
@@ -70,18 +73,29 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 			updateReservation = itemView.findViewById(R.id.res_update);
 		}
 
-		public void bind(ReservationDetails item){
-			reservationId.setText(item.getReference_id());
+		public void bind(ReservationResponseBody item){
+			reservationId.setText(item.getReferenceId());
 			nic.setText(item.getNic());
-			trainId.setText(item.getTrain_id());
+			trainId.setText(item.getTrainId());
 			date.setText(item.getDate());
 			departure.setText(item.getDepature());
 			arrival.setText(item.getArrival());
-			departureTime.setText(item.getDeparture_time());
-			arrivalTime.setText(item.getArrival_time());
-			tripTimeDuration.setText(item.getAverage_time_duration());
-			numberOfSeat.setText(String.valueOf(item.getPassengers_count()));
-			amount.setText(String.valueOf(item.getAmount()));
+			departureTime.setText(item.getDepatureTime());
+			arrivalTime.setText(item.getArrivalTime());
+			tripTimeDuration.setText(item.getAverageTimeDuration());
+			numberOfSeat.setText(String.valueOf(item.getPassengersCount()));
+			amount.setText(String.valueOf(item.getTotalAmount()));
+			//send data to update reservation activity
+			updateReservation.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//send data to update reservation activity
+					Intent intent = new Intent(v.getContext(), UpdateReservation.class);
+					intent.putExtra("updateBody", item);
+					v.getContext().startActivity(intent);
+
+				}
+			});
 		}
 
 

@@ -9,14 +9,14 @@ public class ReservationDto {
     public String nic;
     public String trainId;
     public int passengersCount;
-    public Date date;
-    public String departure;
+    public String date;
+    public String depature;
     public String arrival;
-    public String departureTime;
+    public String depatureTime;
     public String arrivalTime;
     public String averageTimeDuration;
-    public int totalAmount;
-    public Date createdAt;
-    public Date updatedAt;
+    public double totalAmount;
+    public String createdAt;
+    public String updatedAt;
 
 }
