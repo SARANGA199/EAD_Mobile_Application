@@ -136,6 +136,36 @@ public class ReservationManager {
         });
     }
 
+    public void cancelReservation(String id, Consumer<String> onSuccess, Consumer<String> onError){
+        if (!NetworkManager.getInstance().isNetworkAvailable()){
+            onError.accept("No internet connection");
+            return;
+        }
+
+        reservationService.cancelReservation(id).enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful()){
+                    MessageResponse reservationResponse = response.body();
+
+                    if (reservationResponse != null){
+                        onSuccess.accept(reservationResponse.getMessage());
+                    }else{
+                        onError.accept(reservationResponse.getMessage());
+                    }
+
+                }else{
+                    onError.accept("Reservation cancel failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                onError.accept("Something went wrong");
+            }
+        });
+    }
+
 
     private void saveServerReservations(List<ReservationDto>reservations){
         databaseManager.db().ReservationDao().removeAll();

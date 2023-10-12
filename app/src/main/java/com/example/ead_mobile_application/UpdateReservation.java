@@ -83,8 +83,6 @@ public class UpdateReservation extends AppCompatActivity {
 		reservationManager = ReservationManager.getInstance();
 
 		searchButton.setOnClickListener(view -> updateReservation());
-
-
 	}
 
 	private void setupSpinners() {
@@ -230,12 +228,6 @@ public class UpdateReservation extends AppCompatActivity {
 			from = "";
 		}
 
-		//send the data to the backend
-		System.out.println("Destination Updated 1111111111111: " + destination);
-		System.out.println("From Updated 1111111111111: " + from);
-		System.out.println("Date Updated 1111111111111: " + mongoDBDateTime);
-		System.out.println("Seats Updated 1111111111111: " + seats);
-		System.out.println("Seats Updated 1111111111111: " + reservation.id);
 
 		UpdateReservationBody updateReservationBody = new UpdateReservationBody(seatsInt,mongoDBDateTime ,from ,destination );
 

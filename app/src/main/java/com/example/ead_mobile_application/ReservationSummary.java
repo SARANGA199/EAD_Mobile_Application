@@ -72,6 +72,8 @@ public class ReservationSummary extends AppCompatActivity {
 		//convert totalAmount to Double
 		double totalAmount= Double.parseDouble(amount) * passengersCount;
 
+
+
 		// Set the text
 		this.trainName.setText(trainName);
 		this.departure.setText(depature);
@@ -80,7 +82,7 @@ public class ReservationSummary extends AppCompatActivity {
 		this.arrivalTime.setText(arrivalTime);
 		this.tripTimeDuration.setText(averageTimeDuration);
 		this.requestedSeatCount.setText(String.valueOf(requestedSeatCount));
-		this.amount.setText(String.valueOf(amount));
+		this.amount.setText(String.valueOf(totalAmount));
 		this.date.setText(date);
 
 		ReservationRequestBody reservationRequestBody = new ReservationRequestBody(

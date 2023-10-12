@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -26,6 +27,10 @@ public interface ReservationService {
     //update reservation
     @PUT("Reservation/{id}")
     Call<MessageResponse> updateReservation(@Path("id") String id, @Body UpdateReservationBody request);
+
+    //delete reservation
+    @DELETE("Reservation/{id}")
+    Call<MessageResponse> cancelReservation(@Path("id") String id);
 
 
 }
