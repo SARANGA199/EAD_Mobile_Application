@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.ead_mobile_application.managers.DatabaseManager;
 import com.example.ead_mobile_application.managers.LoginManager;
 
 public class Home extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class Home extends AppCompatActivity {
 	private Button userProfile;
 
 	private LoginManager loginManager;
+	private DatabaseManager databaseManager;
 	private final String loginStateFile = "loginstate";
 
 	@Override
@@ -57,6 +59,8 @@ public class Home extends AppCompatActivity {
 			startActivity(reservation);
 
 		});
+
+
 
 
 	}
