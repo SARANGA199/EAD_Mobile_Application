@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ead_mobile_application.models.register.RegisterService;
+import com.example.ead_mobile_application.models.reservation.MessageResponse;
 import com.example.ead_mobile_application.models.reservation.ReservationDao;
 import com.example.ead_mobile_application.models.reservation.ReservationDto;
 import com.example.ead_mobile_application.models.reservation.ReservationEntity;
@@ -12,6 +13,7 @@ import com.example.ead_mobile_application.models.reservation.ReservationResponse
 import com.example.ead_mobile_application.models.reservation.ReservationResponseBody;
 import com.example.ead_mobile_application.models.reservation.ReservationService;
 import com.example.ead_mobile_application.models.reservation.ReservationStatus;
+import com.example.ead_mobile_application.models.reservation.UpdateReservationBody;
 import com.example.ead_mobile_application.utilities.MainThreadHelper;
 import com.google.gson.Gson;
 
@@ -99,6 +101,36 @@ public class ReservationManager {
 
             @Override
             public void onFailure(Call<List<ReservationResponseBody>> call, Throwable t) {
+                onError.accept("Something went wrong");
+            }
+        });
+    }
+
+    public void updateReservation(String id , UpdateReservationBody body, Consumer<String> onSuccess , Consumer<String> onError){
+        if (!NetworkManager.getInstance().isNetworkAvailable()){
+            onError.accept("No internet connection");
+            return;
+        }
+
+        reservationService.updateReservation(id, body).enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful()){
+                    MessageResponse reservationResponse = response.body();
+
+                    if (reservationResponse != null){
+                        onSuccess.accept(reservationResponse.getMessage());
+                    }else{
+                        onError.accept(reservationResponse.getMessage());
+                    }
+
+                }else{
+                    onError.accept("Reservation update failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
                 onError.accept("Something went wrong");
             }
         });

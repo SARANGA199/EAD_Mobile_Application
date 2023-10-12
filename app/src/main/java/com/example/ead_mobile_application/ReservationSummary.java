@@ -65,7 +65,7 @@ public class ReservationSummary extends AppCompatActivity {
 
 		//generate random unique id for referenceId.It should start with "REF" and then 10 random numbers
 		String referenceId = "REF" + String.valueOf((int) (Math.random() * 1000000000));
-		String nic ="123456789V";
+		String nic ="990641099V";
 		//String trainId = "6517de92ac07810b65f07dbf";
 		 //convert requestedSeatCount to int
 		int passengersCount= Integer.parseInt(requestedSeatCount);
