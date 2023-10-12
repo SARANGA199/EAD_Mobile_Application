@@ -10,6 +10,10 @@ import android.widget.Button;
 
 import com.example.ead_mobile_application.managers.DatabaseManager;
 import com.example.ead_mobile_application.managers.LoginManager;
+import com.example.ead_mobile_application.models.login.LoginDao;
+import com.example.ead_mobile_application.models.login.LoginEntity;
+
+import java.util.List;
 
 public class Home extends AppCompatActivity {
 
@@ -64,4 +68,7 @@ public class Home extends AppCompatActivity {
 
 
 	}
+
+
+
 }

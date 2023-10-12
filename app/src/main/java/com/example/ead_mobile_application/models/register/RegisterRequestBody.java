@@ -1,4 +1,4 @@
-package com.example.ead_mobile_application.model.register;
+package com.example.ead_mobile_application.models.register;
 
 public class RegisterRequestBody {
 	public String nic;
