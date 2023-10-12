@@ -22,7 +22,7 @@ public class ReservationEntity {
     public double totalAmount;
     @ColumnInfo(name = "book_date")
     @TypeConverters({DatabaseTypeConverters.class})
-    public Date date;
+    public String date;
     public String departure;
 
     public ReservationStatus status;
@@ -40,8 +40,8 @@ public class ReservationEntity {
         return entity;
     }
 
-    public String getDueDateAsString(){
-        return date == null ? null : DatabaseTypeConverters.dateToString(date);
-    }
+//    public String getDueDateAsString(){
+//        return date == null ? null : DatabaseTypeConverters.dateToString(date);
+//    }
 
 }

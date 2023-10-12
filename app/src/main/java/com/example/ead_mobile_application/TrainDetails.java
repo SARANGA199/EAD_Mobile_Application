@@ -1,6 +1,8 @@
 package com.example.ead_mobile_application;
 
-public class TrainDetails {
+import java.io.Serializable;
+
+public class TrainDetails implements Serializable {
 
 	private String trainId;
 	private String trainName;
@@ -11,9 +13,11 @@ public class TrainDetails {
 	private double tripTimeDuration;
 	private int requestedSeatCount;
 	private int availableSeatCount;
+	public String date;
 	private double amount;
 
-	public TrainDetails(String trainId, String trainName, String departure, String arrival, String departureTime, String arrivalTime, double tripTimeDuration, int requestedSeatCount, int availableSeatCount, double amount) {
+
+	public TrainDetails(String trainId, String trainName, String departure, String arrival, String departureTime, String arrivalTime, double tripTimeDuration, int requestedSeatCount, int availableSeatCount, double amount,String date) {
 		this.trainId = trainId;
 		this.trainName = trainName;
 		this.departure = departure;
@@ -23,6 +27,7 @@ public class TrainDetails {
 		this.tripTimeDuration = tripTimeDuration;
 		this.requestedSeatCount = requestedSeatCount;
 		this.availableSeatCount = availableSeatCount;
+		this.date = date;
 		this.amount = amount;
 	}
 
@@ -60,6 +65,10 @@ public class TrainDetails {
 
 	public int getAvailableSeatCount() {
 		return availableSeatCount;
+	}
+
+	public String getDate() {
+		return date;
 	}
 
 	public double getAmount() {

@@ -1,21 +1,32 @@
 package com.example.ead_mobile_application;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ead_mobile_application.managers.ContextManager;
+import com.example.ead_mobile_application.managers.ReservationManager;
+import com.example.ead_mobile_application.managers.TrainManager;
+import com.example.ead_mobile_application.models.reservation.ReservationResponseBody;
 
 import java.util.List;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder>{
 
-	private List<ReservationDetails> reservationDetailsList;
+	private List<ReservationResponseBody> reservationDetailsList;
 
-	public ReservationAdapter(List<ReservationDetails> reservationDetailsList) {
+
+
+	public ReservationAdapter(List<ReservationResponseBody> reservationDetailsList) {
 		this.reservationDetailsList = reservationDetailsList;
 	}
 
@@ -28,7 +39,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-		ReservationDetails item = reservationDetailsList.get(position);
+		ReservationResponseBody item = reservationDetailsList.get(position);
 		holder.bind(item);
 	}
 
@@ -38,6 +49,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder{
+
+
 
 		private TextView reservationId;
 		private TextView nic;
@@ -52,6 +65,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 		private TextView amount;
 		private Button cancelReservation;
 		private Button updateReservation;
+
+
 
 		public ViewHolder(@NonNull View itemView) {
 			super(itemView);
@@ -70,19 +85,81 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 			updateReservation = itemView.findViewById(R.id.res_update);
 		}
 
-		public void bind(ReservationDetails item){
-			reservationId.setText(item.getReference_id());
+		public void bind(ReservationResponseBody item){
+			reservationId.setText(item.getReferenceId());
 			nic.setText(item.getNic());
-			trainId.setText(item.getTrain_id());
+			trainId.setText(item.getTrainId());
 			date.setText(item.getDate());
 			departure.setText(item.getDepature());
 			arrival.setText(item.getArrival());
-			departureTime.setText(item.getDeparture_time());
-			arrivalTime.setText(item.getArrival_time());
-			tripTimeDuration.setText(item.getAverage_time_duration());
-			numberOfSeat.setText(String.valueOf(item.getPassengers_count()));
-			amount.setText(String.valueOf(item.getAmount()));
+			departureTime.setText(item.getDepatureTime());
+			arrivalTime.setText(item.getArrivalTime());
+			tripTimeDuration.setText(item.getAverageTimeDuration());
+			numberOfSeat.setText(String.valueOf(item.getPassengersCount()));
+			amount.setText(String.valueOf(item.getTotalAmount()));
+			//send data to update reservation activity
+			updateReservation.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//send data to update reservation activity
+					Intent intent = new Intent(v.getContext(), UpdateReservation.class);
+					intent.putExtra("updateBody", item);
+					v.getContext().startActivity(intent);
+
+				}
+			});
+			//cancel reservation
+			cancelReservation.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//send data to update reservation activity
+					showCancelConfirmationDialog(item.getId());
+
+				}
+			});
+
+
+	}
+
+		private void showCancelConfirmationDialog(final String reservationId) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+			builder.setMessage("Are you sure you want to cancel this reservation?");
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// User confirmed the cancellation
+					cancelReservations(reservationId);
+					dialog.dismiss();
+				}
+			});
+			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// User canceled the operation
+					dialog.dismiss();
+				}
+			});
+
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
+		public void cancelReservations(String id){
+
+		ReservationManager reservationManager;
+		ContextManager.getInstance().setApplicationContext(itemView.getContext());
+		reservationManager = ReservationManager.getInstance();
+		reservationManager.cancelReservation(id, (message) -> handleReUpdateSuccess(message), error -> handleReUpdateFailed(error));
+
+	}
+
+	public void handleReUpdateSuccess(String message) {
+		Toast.makeText(itemView.getContext(), message, Toast.LENGTH_SHORT).show();
+
+	}
+
+	public void handleReUpdateFailed(String error) {
+		Toast.makeText(itemView.getContext(), error, Toast.LENGTH_SHORT).show();
+	}
 
 
 	}
