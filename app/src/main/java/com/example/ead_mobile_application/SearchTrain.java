@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ead_mobile_application.managers.ContextManager;
 import com.example.ead_mobile_application.managers.TrainManager;
 
 public class SearchTrain extends AppCompatActivity {
@@ -74,6 +75,9 @@ public class SearchTrain extends AppCompatActivity {
 		});
 
 		searchButton.setOnClickListener(view -> searchTrain());
+
+		ContextManager.getInstance().setApplicationContext(this.getApplicationContext());
+		trainManager = TrainManager.getInstance();
 	}
 
 	private void setupSpinners() {
@@ -238,6 +242,7 @@ public class SearchTrain extends AppCompatActivity {
 		//go to the next activity
 		Intent intent = new Intent(SearchTrain.this, AvailableTrainList.class);
 		intent.putParcelableArrayListExtra("trainResponse", (ArrayList<? extends Parcelable>) trainResponse);
+		intent.putExtra("date", mongoDBDateTime);
 		startActivity(intent);
 	}
 }

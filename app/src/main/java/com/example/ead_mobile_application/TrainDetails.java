@@ -16,6 +16,8 @@ public class TrainDetails implements Parcelable {
 	private int availableSeatCount;
 	private double amount;
 
+	public String date;
+
 	public TrainDetails(String trainId, String trainName, String departure, String arrival, String departureTime, String arrivalTime, double tripTimeDuration, int requestedSeatCount, int availableSeatCount, double amount) {
 		this.trainId = trainId;
 		this.trainName = trainName;
@@ -28,6 +30,8 @@ public class TrainDetails implements Parcelable {
 		this.availableSeatCount = availableSeatCount;
 		this.amount = amount;
 	}
+
+
 
 	protected TrainDetails(Parcel in) {
 		trainId = in.readString();
@@ -66,6 +70,14 @@ public class TrainDetails implements Parcelable {
 		return departure;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	public String getArrival() {
 		return arrival;
 	}
@@ -88,6 +100,46 @@ public class TrainDetails implements Parcelable {
 
 	public int getAvailableSeatCount() {
 		return availableSeatCount;
+	}
+
+	public void setTrainId(String trainId) {
+		this.trainId = trainId;
+	}
+
+	public void setTrainName(String trainName) {
+		this.trainName = trainName;
+	}
+
+	public void setDeparture(String departure) {
+		this.departure = departure;
+	}
+
+	public void setArrival(String arrival) {
+		this.arrival = arrival;
+	}
+
+	public void setDepartureTime(String departureTime) {
+		this.departureTime = departureTime;
+	}
+
+	public void setArrivalTime(String arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+
+	public void setTripTimeDuration(double tripTimeDuration) {
+		this.tripTimeDuration = tripTimeDuration;
+	}
+
+	public void setRequestedSeatCount(int requestedSeatCount) {
+		this.requestedSeatCount = requestedSeatCount;
+	}
+
+	public void setAvailableSeatCount(int availableSeatCount) {
+		this.availableSeatCount = availableSeatCount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 	public double getAmount() {
