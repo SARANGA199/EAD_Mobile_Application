@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,13 +24,17 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ead_mobile_application.managers.TrainManager;
 
 public class SearchTrain extends AppCompatActivity {
 	private Calendar calendar;
@@ -39,6 +45,8 @@ public class SearchTrain extends AppCompatActivity {
 	private Button searchButton;
 
 	private String mongoDBDateTime;
+
+	private TrainManager trainManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +179,7 @@ public class SearchTrain extends AppCompatActivity {
 		datePickerDialog.show();
 	}
 
-	private void searchTrain(){
+	private void searchTrain() {
 		String destination = destinationSpinner.getSelectedItem().toString();
 		String from = fromSpinner.getSelectedItem().toString();
 		String date = dateEditText.getText().toString();
@@ -183,22 +191,53 @@ public class SearchTrain extends AppCompatActivity {
 			//display toast message
 			Toast.makeText(getApplicationContext(), "Please enter a valid number of seats", Toast.LENGTH_SHORT).show();
 			return;
-		} if (seatsInt >=5 ) {
+		}
+		if (seatsInt >= 5) {
 			//display toast message
 			Toast.makeText(getApplicationContext(), "You can only book a maximum of 4 seats", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
-		if(destination.equals("Select Destination")){
+		if (destination.equals("Select Destination")) {
 			destination = "";
 		}
-		if(from.equals("Select From")){
+		if (from.equals("Select From")) {
 			from = "";
 		}
 
-		System.out.println("Destination: " + destination);
-		System.out.println("From: " + from);
-		System.out.println("Date: " + mongoDBDateTime);
-		System.out.println("Seats: " + seats);
+		trainManager.searchTrain(from, destination, seatsInt, mongoDBDateTime, trainResponse -> handleTrainSuccess(trainResponse), error -> handleTrainFailed(error));
+
+
+	}
+
+	private void handleTrainSuccess (List<TrainDetails> trainResponse) {
+		//display toast message
+		Toast.makeText(getApplicationContext(), "Train found continue for booking", Toast.LENGTH_SHORT).show();
+
+		if (trainResponse.size() == 0) {
+			//display toast message
+			Toast.makeText(getApplicationContext(), "No train found", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		// Go to the next activity on the main UI thread
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				displayAvailableTrains(trainResponse);
+			}
+		});
+	}
+
+	private void handleTrainFailed (String error) {
+		//display toast message
+		Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+	}
+
+	private void displayAvailableTrains(List<TrainDetails> trainResponse) {
+		//go to the next activity
+		Intent intent = new Intent(SearchTrain.this, AvailableTrainList.class);
+		intent.putParcelableArrayListExtra("trainResponse", (ArrayList<? extends Parcelable>) trainResponse);
+		startActivity(intent);
 	}
 }

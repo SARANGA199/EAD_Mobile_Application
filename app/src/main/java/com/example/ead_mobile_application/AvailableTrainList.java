@@ -16,6 +16,12 @@ public class AvailableTrainList extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_available_train_list);
 
+
+		//get Serializable object from intent
+		ArrayList<TrainDetails> trainResponse = getIntent().getParcelableArrayListExtra("trainResponse");
+
+
+
 		RecyclerView recyclerView = findViewById(R.id.recycler_view);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -23,7 +29,7 @@ public class AvailableTrainList extends AppCompatActivity {
 		trainDetailsList.add(new TrainDetails("1", "Ruhunu kumari express", "Matara", "Galle", "6:00 AM", "7:00 PM", 1.0, 3, 296, 450.0));
 		trainDetailsList.add(new TrainDetails("2", "Rajarata Rajini", "Matara", "Colombo", "9:30 AM", "2:30 PM", 5.0, 4, 285, 880.0));
 
-		TrainAdapter trainAdapter = new TrainAdapter(trainDetailsList);
+		TrainAdapter trainAdapter = new TrainAdapter(trainResponse);
 		recyclerView.setAdapter(trainAdapter);
 	}
 }

@@ -1,6 +1,9 @@
 package com.example.ead_mobile_application;
 
-public class TrainDetails {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TrainDetails implements Parcelable {
 
 	private String trainId;
 	private String trainName;
@@ -25,6 +28,31 @@ public class TrainDetails {
 		this.availableSeatCount = availableSeatCount;
 		this.amount = amount;
 	}
+
+	protected TrainDetails(Parcel in) {
+		trainId = in.readString();
+		trainName = in.readString();
+		departure = in.readString();
+		arrival = in.readString();
+		departureTime = in.readString();
+		arrivalTime = in.readString();
+		tripTimeDuration = in.readDouble();
+		requestedSeatCount = in.readInt();
+		availableSeatCount = in.readInt();
+		amount = in.readDouble();
+	}
+
+	public static final Creator<TrainDetails> CREATOR = new Creator<TrainDetails>() {
+		@Override
+		public TrainDetails createFromParcel(Parcel in) {
+			return new TrainDetails(in);
+		}
+
+		@Override
+		public TrainDetails[] newArray(int size) {
+			return new TrainDetails[size];
+		}
+	};
 
 	public String getTrainId() {
 		return trainId;
@@ -64,5 +92,24 @@ public class TrainDetails {
 
 	public double getAmount() {
 		return amount;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(trainId);
+		dest.writeString(trainName);
+		dest.writeString(departure);
+		dest.writeString(arrival);
+		dest.writeString(departureTime);
+		dest.writeString(arrivalTime);
+		dest.writeDouble(tripTimeDuration);
+		dest.writeInt(requestedSeatCount);
+		dest.writeInt(availableSeatCount);
+		dest.writeDouble(amount);
 	}
 }
