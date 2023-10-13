@@ -71,6 +71,10 @@ public class RegisterActivity extends AppCompatActivity {
 			this.password.setError("Password is required");
 			this.password.requestFocus();
 			return;
+		}else if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")) {
+			this.password.setError("Password should contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character");
+			this.password.requestFocus();
+			return;
 		}
 
 		if (confirmPassword.isEmpty()) {

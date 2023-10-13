@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".UserProfileUpdateActivity"
+            android:exported="false" />
+        <activity
             android:name=".UpdateReservation"
             android:exported="false" />
         <activity

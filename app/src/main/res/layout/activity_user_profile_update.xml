@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/sign_bg7"
-    tools:context=".RegisterActivity">
+    tools:context=".UserProfileUpdateActivity">
 
     <TextView
         android:id="@+id/signuptitle"
@@ -16,7 +16,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="Sign up"
+        android:text="Update Profile"
         android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold" />
@@ -119,36 +119,8 @@
         android:layout_marginBottom="15dp"
         android:padding="12dp"
         android:backgroundTint="#AD050505"
-        android:text="REGISTER"
+        android:text="UPDATE"
         android:textSize="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/info"
-        android:layout_above="@id/socialicons"
-        android:textColor="@color/white"
-        android:text="Already have an account? Sign in here"
-        android:layout_centerHorizontal="true"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/socialicons"
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="120dp"
-            android:layout_margin="20dp"
-            android:textSize="20dp"
-            android:layout_height="50dp"
-            android:paddingBottom="10dp"
-            android:text="Login"
-            app:cornerRadius="32dp"/>
-
-    </LinearLayout>
 
 
 </RelativeLayout>
