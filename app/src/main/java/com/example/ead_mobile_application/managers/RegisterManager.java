@@ -3,6 +3,10 @@ package com.example.ead_mobile_application.managers;
 import com.example.ead_mobile_application.models.register.RegisterRequestBody;
 import com.example.ead_mobile_application.models.register.RegisterResponse;
 import com.example.ead_mobile_application.models.register.RegisterService;
+import com.example.ead_mobile_application.models.update.UpdateRequestBody;
+import com.example.ead_mobile_application.models.update.UpdateResponse;
+import com.example.ead_mobile_application.models.update.UpdateService;
+
 import androidx.core.util.Consumer;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,6 +18,10 @@ public class RegisterManager {
 
 	private RegisterService registerService;
 
+	private NetworkManager networkManager;
+
+	private UpdateService updateService;
+
 	public static RegisterManager getInstance() {
 		if (singleton == null) {
 			singleton = new RegisterManager();
@@ -22,12 +30,14 @@ public class RegisterManager {
 	}
 
 	private RegisterManager() {
-		registerService = com.example.ead_mobile_application.managers.NetworkManager.getInstance().createService(RegisterService.class);
+		registerService = networkManager.getInstance().createService(RegisterService.class);
+		updateService = networkManager.getInstance().createService(UpdateService.class);
+		networkManager = NetworkManager.getInstance();
 	}
 
 	public void register(String nic, String name, String email, String password, Runnable onSuccess , Consumer<String> onError) {
 
-		if (!NetworkManager.getInstance().isNetworkAvailable()) {
+		if (!networkManager.getInstance().isNetworkAvailable()) {
 			onError.accept("No internet connectivity");
 			return;
 		}
@@ -58,4 +68,38 @@ public class RegisterManager {
 		});
 	}
 
+	public void updateProfile(String nic, String name, String email, String password, Runnable onSuccess , Consumer<String> onError) {
+
+		if (!networkManager.getInstance().isNetworkAvailable()) {
+			onError.accept("No internet connectivity");
+			return;
+		}
+
+		UpdateRequestBody body = new UpdateRequestBody(nic, name, email, password);
+		//set the nic as the path parameter and pass the body as the request body
+		updateService.update(body, body.nic).enqueue(new Callback<UpdateResponse>() {
+			@Override
+			public void onResponse(Call<UpdateResponse> call, Response<UpdateResponse> response) {
+				if (response.isSuccessful()) {
+					UpdateResponse updateResponse = response.body();
+
+					if (updateResponse != null) {
+						onSuccess.run();
+					}else{
+						onError.accept("Invalid credentials");
+						return;
+					}
+
+				} else {
+					onError.accept("Invalid credentials");
+				}
+			}
+
+			@Override
+			public void onFailure(Call<UpdateResponse> call, Throwable t) {
+				onError.accept("Something went wrong");
+			}
+		});
+
+	}
 }
