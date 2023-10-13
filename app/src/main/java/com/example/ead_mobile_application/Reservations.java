@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.ead_mobile_application.managers.ContextManager;
+import com.example.ead_mobile_application.managers.DatabaseManager;
 import com.example.ead_mobile_application.managers.ReservationManager;
+import com.example.ead_mobile_application.models.login.LoginDao;
+import com.example.ead_mobile_application.models.login.LoginEntity;
 import com.example.ead_mobile_application.models.reservation.ReservationResponseBody;
 
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import java.util.List;
 public class Reservations extends AppCompatActivity {
 
 	ReservationManager reservationManager;
+	private DatabaseManager databaseManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +30,25 @@ public class Reservations extends AppCompatActivity {
 
 		ContextManager.getInstance().setApplicationContext(this.getApplicationContext());
 		reservationManager = ReservationManager.getInstance();
+		databaseManager = DatabaseManager.getInstance();
 
-		String nic = "990641099V";
-		getReservations(nic);
+		new AsyncTask<Void, Void, LoginEntity>() {
+			@Override
+			protected LoginEntity doInBackground(Void... voids) {
+				LoginDao dao = databaseManager.db().LoginDao();
+				List<LoginEntity> loginEntity = dao.get();
+				return (loginEntity != null && loginEntity.size() > 0) ? loginEntity.get(0) : null;
+			}
+
+			@Override
+			protected void onPostExecute(LoginEntity loginEntity) {
+				if (loginEntity != null) {
+					getReservations(loginEntity.nic);
+				}
+			}
+		}.execute();
+
+
 
 	}
 

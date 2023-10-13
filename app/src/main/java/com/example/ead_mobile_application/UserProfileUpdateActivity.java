@@ -2,6 +2,7 @@ package com.example.ead_mobile_application;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
@@ -65,8 +66,10 @@ public class UserProfileUpdateActivity extends AppCompatActivity {
                     Name.setText(loginEntity.name);
                     Email.setText(loginEntity.email);
                 } else {
-                    // Handle the case where no data is found
-                    // You may want to display a message or take appropriate action
+                    // No user logged in
+                    // Navigate to login page
+                    Intent intent = new Intent(UserProfileUpdateActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
             }
         }.execute();

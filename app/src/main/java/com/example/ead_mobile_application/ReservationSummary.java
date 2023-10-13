@@ -3,14 +3,20 @@ package com.example.ead_mobile_application;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ead_mobile_application.managers.ContextManager;
+import com.example.ead_mobile_application.managers.DatabaseManager;
 import com.example.ead_mobile_application.managers.ReservationManager;
+import com.example.ead_mobile_application.models.login.LoginDao;
+import com.example.ead_mobile_application.models.login.LoginEntity;
 import com.example.ead_mobile_application.models.reservation.ReservationRequestBody;
+
+import java.util.List;
 
 public class ReservationSummary extends AppCompatActivity {
 
@@ -27,7 +33,9 @@ public class ReservationSummary extends AppCompatActivity {
 	private Button checkout;
 
 	private ReservationManager reservationManager;
+	private DatabaseManager databaseManager;
 
+	private String nic = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +54,7 @@ public class ReservationSummary extends AppCompatActivity {
 
 		ContextManager.getInstance().setApplicationContext(this.getApplicationContext());
 		reservationManager = ReservationManager.getInstance();
+		databaseManager = DatabaseManager.getInstance();
 
 
 		// Get the intent that started this activity
@@ -65,7 +74,21 @@ public class ReservationSummary extends AppCompatActivity {
 
 		//generate random unique id for referenceId.It should start with "REF" and then 10 random numbers
 		String referenceId = "REF" + String.valueOf((int) (Math.random() * 1000000000));
-		String nic ="990641099V";
+		new AsyncTask<Void, Void, LoginEntity>() {
+			@Override
+			protected LoginEntity doInBackground(Void... voids) {
+				LoginDao dao = databaseManager.db().LoginDao();
+				List<LoginEntity> loginEntity = dao.get();
+				return (loginEntity != null && loginEntity.size() > 0) ? loginEntity.get(0) : null;
+			}
+
+			@Override
+			protected void onPostExecute(LoginEntity loginEntity) {
+				if (loginEntity != null) {
+					nic = loginEntity.nic;
+				}
+			}
+		}.execute();
 		//String trainId = "6517de92ac07810b65f07dbf";
 		 //convert requestedSeatCount to int
 		int passengersCount= Integer.parseInt(requestedSeatCount);
