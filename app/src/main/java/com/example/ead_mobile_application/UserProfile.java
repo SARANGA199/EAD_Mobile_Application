@@ -68,8 +68,11 @@ public class UserProfile extends AppCompatActivity {
 					Name.setText(loginEntity.name);
 					Email.setText(loginEntity.email);
 				} else {
-					// Handle the case where no data is found
-					// You may want to display a message or take appropriate action
+					// No user logged in
+					// Navigate to login page
+					Intent intent = new Intent(UserProfile.this, LoginActivity.class);
+					startActivity(intent);
+
 				}
 			}
 		}.execute();
