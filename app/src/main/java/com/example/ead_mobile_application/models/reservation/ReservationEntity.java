@@ -1,42 +1,40 @@
 package com.example.ead_mobile_application.models.reservation;
 
-import androidx.room.ColumnInfo;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.example.ead_mobile_application.utilities.DatabaseTypeConverters;
-
-import java.util.Date;
 
 @Entity(tableName = "reservations")
 public class ReservationEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
+    @PrimaryKey
+    @NonNull
+    public String id;
     public String referenceId;
 
     public String nic;
     public String trainId;
     public int passengersCount;
-    public double totalAmount;
-    @ColumnInfo(name = "book_date")
-    @TypeConverters({DatabaseTypeConverters.class})
     public String date;
-    public String departure;
+    public String depature;
+    public String arrival;
+    public String depatureTime;
+    public String arrivalTime;
+    public String averageTimeDuration;
+    public double totalAmount;
+    public String createdAt;
+    public String updatedAt;
 
-    public ReservationStatus status;
-
-    public static ReservationEntity fromDto(ReservationDto dto){
+    public static ReservationEntity fromDto(ReservationResponseBody dto){
         ReservationEntity entity = new ReservationEntity();
-        entity.id = 0; // room db will autogenerate for us after insert()
+        entity.id = dto.id;
         entity.referenceId = dto.referenceId;
         entity.nic = dto.nic;
         entity.trainId = dto.trainId;
         entity.passengersCount = dto.passengersCount;
         entity.totalAmount = dto.totalAmount;
         entity.date = dto.date;
-        entity.status = ReservationStatus.PENDING; // set default state
+        entity.averageTimeDuration = dto.averageTimeDuration; // set default state
         return entity;
     }
 

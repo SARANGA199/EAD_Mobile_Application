@@ -1,5 +1,7 @@
 package com.example.ead_mobile_application.managers;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -56,7 +58,23 @@ public class ReservationManager {
 
                     if (reservationResponse != null){
                         System.out.println("Reservation response:55555555 " + reservationResponse.nic);
-                        onSuccess.run();
+
+                        new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                ReservationDao dao = databaseManager.db().ReservationDao();
+                                dao.insertAll((List<ReservationEntity>) ReservationEntity.fromDto(reservationResponse));
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                // This is where you can update the UI or perform any post-database operation logic.
+                                if (reservationResponse != null) {
+                                    onSuccess.run();
+                                }
+                            }
+                        }.execute();
                     }else{
                         onError.accept("No response from server");
                     }
@@ -167,11 +185,11 @@ public class ReservationManager {
     }
 
 
-    private void saveServerReservations(List<ReservationDto>reservations){
+    private void saveServerReservations(List<ReservationResponseBody>reservations){
         databaseManager.db().ReservationDao().removeAll();
 
         List<ReservationEntity> tempEntities = new ArrayList<>();
-        for(ReservationDto t : reservations){
+        for(ReservationResponseBody t : reservations){
             tempEntities.add(ReservationEntity.fromDto(t));
         }
 
@@ -208,36 +226,36 @@ public class ReservationManager {
      * Check if the local db has any tasks, if so return them. Otherwise,
      * fetch new list from the server.
      */
-    public void getReservations(Consumer<List<ReservationEntity>> onReservationsLoaded, Consumer<String> onError) {
-
-        new Thread(() -> {
-            ReservationDao dao = databaseManager.db().ReservationDao();
-            List<ReservationEntity> dbReservations = dao.getAll();
-
-            if (dbReservations != null && dbReservations.size() > 0){
-                MainThreadHelper.onMainThread(() -> onReservationsLoaded.accept(dbReservations));
-            }
-            else{
-                // TODO: Consume the API, store the tasks locally, and call onReservationsLoaded
-
-                if (!NetworkManager.getInstance().isNetworkAvailable()){
-                    MainThreadHelper.onMainThread(() -> onError.accept("No internet connection"));
-                }
-
-                getReservationsFromServer(
-                        serverTasks -> {
-                            saveServerReservations(serverTasks);
-                            List<ReservationEntity> allReservations = dao.getAll();
-                            MainThreadHelper.onMainThread(() -> onReservationsLoaded.accept(allReservations));
-                        },
-                        error -> MainThreadHelper.onMainThread(() -> onError.accept(error))
-                );
-
-            }
-
-
-        }).start();
-    }
+//    public void getReservations(Consumer<List<ReservationEntity>> onReservationsLoaded, Consumer<String> onError) {
+//
+//        new Thread(() -> {
+//            ReservationDao dao = databaseManager.db().ReservationDao();
+//            List<ReservationEntity> dbReservations = dao.getAll();
+//
+//            if (dbReservations != null && dbReservations.size() > 0){
+//                MainThreadHelper.onMainThread(() -> onReservationsLoaded.accept(dbReservations));
+//            }
+//            else{
+//                // TODO: Consume the API, store the tasks locally, and call onReservationsLoaded
+//
+//                if (!NetworkManager.getInstance().isNetworkAvailable()){
+//                    MainThreadHelper.onMainThread(() -> onError.accept("No internet connection"));
+//                }
+//
+//                getReservationsFromServer(
+//                        serverTasks -> {
+//                            saveServerReservations(serverTasks);
+//                            List<ReservationEntity> allReservations = dao.getAll();
+//                            MainThreadHelper.onMainThread(() -> onReservationsLoaded.accept(allReservations));
+//                        },
+//                        error -> MainThreadHelper.onMainThread(() -> onError.accept(error))
+//                );
+//
+//            }
+//
+//
+//        }).start();
+//    }
 
     public ReservationStatus getNextReservationStatus(ReservationStatus status){
         switch(status){
@@ -245,26 +263,6 @@ public class ReservationManager {
             case IN_PROGRESS: return ReservationStatus.COMPLETED;
             default: return null;
         }
-    }
-
-    public void updateReservationStatus(ReservationEntity reservation, ReservationStatus nextStatus, Consumer<ReservationEntity> onSuccess, Consumer<String> onError){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                reservation.status = nextStatus;
-
-                try{
-                    databaseManager.db().ReservationDao().update(reservation);
-                    MainThreadHelper.onMainThread(() -> onSuccess.accept(reservation));
-                }
-                catch(Exception e){
-                    Log.e("Update", e.toString());
-                    MainThreadHelper.onMainThread(() -> {
-                        onError.accept("Error occurred while trying to change task status");
-                    });
-                }
-            }
-        }).start();
     }
 
 
