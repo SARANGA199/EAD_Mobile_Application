@@ -20,7 +20,7 @@
             android:name=".UserProfileUpdateActivity"
             android:exported="false" />
          <activity
-            android.name=".ReservationAction" 
+            android:name=".ReservationAction"
             android:exported="false" />   
         <activity
             android:name=".UpdateReservation"
