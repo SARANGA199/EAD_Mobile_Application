@@ -328,33 +328,5 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        >
-
-        <Button
-            android:id="@+id/res_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:backgroundTint="#FF9800"
-            android:layout_marginEnd="120dp"
-            android:textColor="#ffffff"
-            android:textSize="16sp"/>
-
-        <Button
-            android:id="@+id/res_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete"
-            android:backgroundTint="#FF0000"
-            android:textColor="#ffffff"
-            android:textSize="16sp"/>
-
-    </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -27,10 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder>{
+public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
 	private List<ReservationResponseBody> reservationDetailsList;
-
 
 
 	public ReservationAdapter(List<ReservationResponseBody> reservationDetailsList) {
@@ -55,8 +54,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 		return reservationDetailsList.size();
 	}
 
-	public static class ViewHolder extends RecyclerView.ViewHolder{
-
+	public static class ViewHolder extends RecyclerView.ViewHolder {
 
 
 		private TextView reservationId;
@@ -70,11 +68,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 		private TextView tripTimeDuration;
 		private TextView numberOfSeat;
 		private TextView amount;
-		private Button cancelReservation;
-		private Button updateReservation;
+
 
 		private CardView cardView;
-
 
 
 		public ViewHolder(@NonNull View itemView) {
@@ -90,12 +86,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 			tripTimeDuration = itemView.findViewById(R.id.tripTimeDuration);
 			numberOfSeat = itemView.findViewById(R.id.seatCount);
 			amount = itemView.findViewById(R.id.amount);
-			cancelReservation = itemView.findViewById(R.id.res_delete);
-			updateReservation = itemView.findViewById(R.id.res_update);
 			cardView = itemView.findViewById(R.id.res_history);
 		}
 
-		public void bind(ReservationResponseBody item){
+		public void bind(ReservationResponseBody item) {
 			reservationId.setText(item.getReferenceId());
 			nic.setText(item.getNic());
 			trainId.setText(item.getTrainId());
@@ -119,71 +113,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 				}
 			});
 
-			//send data to update reservation activity
-			updateReservation.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-						// Enable the button and allow the update
-
-						Intent intent = new Intent(v.getContext(), UpdateReservation.class);
-						intent.putExtra("updateBody", item);
-						v.getContext().startActivity(intent);
-				}
-			});
-			//cancel reservation
-			cancelReservation.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//send data to update reservation activity
-					showCancelConfirmationDialog(item.getId());
-
-				}
-			});
-
-
-	}
-
-		private void showCancelConfirmationDialog(final String reservationId) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-			builder.setMessage("Are you sure you want to cancel this reservation?");
-			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// User confirmed the cancellation
-					cancelReservations(reservationId);
-					dialog.dismiss();
-				}
-			});
-			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// User canceled the operation
-					dialog.dismiss();
-				}
-			});
-
-			AlertDialog dialog = builder.create();
-			dialog.show();
 		}
-		public void cancelReservations(String id){
-
-		ReservationManager reservationManager;
-		ContextManager.getInstance().setApplicationContext(itemView.getContext());
-		reservationManager = ReservationManager.getInstance();
-		reservationManager.cancelReservation(id, (message) -> handleReUpdateSuccess(message), error -> handleReUpdateFailed(error));
-
 	}
-
-	public void handleReUpdateSuccess(String message) {
-		Toast.makeText(itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
-	}
-
-	public void handleReUpdateFailed(String error) {
-		Toast.makeText(itemView.getContext(), error, Toast.LENGTH_SHORT).show();
-	}
-
-
-	}
-
 }
