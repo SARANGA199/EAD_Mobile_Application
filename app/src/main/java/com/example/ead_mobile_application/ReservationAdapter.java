@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ead_mobile_application.managers.ContextManager;
@@ -18,7 +19,13 @@ import com.example.ead_mobile_application.managers.ReservationManager;
 import com.example.ead_mobile_application.managers.TrainManager;
 import com.example.ead_mobile_application.models.reservation.ReservationResponseBody;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder>{
 
@@ -66,6 +73,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 		private Button cancelReservation;
 		private Button updateReservation;
 
+		private CardView cardView;
+
 
 
 		public ViewHolder(@NonNull View itemView) {
@@ -83,6 +92,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 			amount = itemView.findViewById(R.id.amount);
 			cancelReservation = itemView.findViewById(R.id.res_delete);
 			updateReservation = itemView.findViewById(R.id.res_update);
+			cardView = itemView.findViewById(R.id.res_history);
 		}
 
 		public void bind(ReservationResponseBody item){
@@ -97,15 +107,27 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 			tripTimeDuration.setText(item.getAverageTimeDuration());
 			numberOfSeat.setText(String.valueOf(item.getPassengersCount()));
 			amount.setText(String.valueOf(item.getTotalAmount()));
+
+
+			//send data to another activity
+			cardView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(v.getContext(), ReservationAction.class);
+					intent.putExtra("reservationBody", item);
+					v.getContext().startActivity(intent);
+				}
+			});
+
 			//send data to update reservation activity
 			updateReservation.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//send data to update reservation activity
-					Intent intent = new Intent(v.getContext(), UpdateReservation.class);
-					intent.putExtra("updateBody", item);
-					v.getContext().startActivity(intent);
+						// Enable the button and allow the update
 
+						Intent intent = new Intent(v.getContext(), UpdateReservation.class);
+						intent.putExtra("updateBody", item);
+						v.getContext().startActivity(intent);
 				}
 			});
 			//cancel reservation

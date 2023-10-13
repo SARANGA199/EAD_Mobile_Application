@@ -50,7 +50,7 @@ public class UpdateReservation extends AppCompatActivity {
 		if (intent != null) {
 
 			 reservation = (ReservationResponseBody) intent.getSerializableExtra("updateBody");
-			System.out.println("update rservation 1234 "+reservation.nic);
+
 		}
 
 		dateEditText = findViewById(R.id.date_picker_edit_text);
@@ -58,6 +58,10 @@ public class UpdateReservation extends AppCompatActivity {
 		fromSpinner = findViewById(R.id.from_spinner);
 		numberOfSeats = findViewById(R.id.num_of_seats_edit_text);
 		searchButton = findViewById(R.id.btn_search_train);
+
+		//get date only from the date time
+		String[] date = reservation.date.split("T");
+		reservation.date = date[0];
 
 		//set the data to the fields
 		dateEditText.setText(reservation.date);
@@ -207,6 +211,16 @@ public class UpdateReservation extends AppCompatActivity {
 		String from = fromSpinner.getSelectedItem().toString();
 		String date = dateEditText.getText().toString();
 		String seats = numberOfSeats.getText().toString();
+		String newDate;
+
+		if (mongoDBDateTime == null) {
+			//display toast message
+			newDate = reservation.date;
+
+		}else{
+			newDate = mongoDBDateTime;
+		}
+
 
 		//convert string to int
 		int seatsInt = Integer.parseInt(seats);
@@ -228,8 +242,7 @@ public class UpdateReservation extends AppCompatActivity {
 			from = "";
 		}
 
-
-		UpdateReservationBody updateReservationBody = new UpdateReservationBody(seatsInt,mongoDBDateTime ,from ,destination );
+		UpdateReservationBody updateReservationBody = new UpdateReservationBody(seatsInt,newDate ,from ,destination );
 
 		//send the data to the backend
 		reservationManager.updateReservation(reservation.id ,updateReservationBody,(message) -> handleReUpdateSuccess(message), error -> handleReUpdateFailed(error));
@@ -239,7 +252,7 @@ public class UpdateReservation extends AppCompatActivity {
 
 		if (message.equals("Reservation updated successfully !")) {
 			//display toast message
-			Toast.makeText(getApplicationContext(), "Reservation Updated", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(), "Reservation Updated", Toast.LENGTH_SHORT).show();
 			LayoutInflater inflater = getLayoutInflater();
 			View layout = inflater.inflate(R.layout.success_toast_layout, null);
 
