@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.ead_mobile_application.managers.DatabaseManager;
 import com.example.ead_mobile_application.managers.LoginManager;
@@ -22,7 +23,7 @@ public class Home extends AppCompatActivity {
 	private CardView cardView2;
 
 	private Button logout;
-	private Button userProfile;
+	private ImageView userProfile;
 
 	private LoginManager loginManager;
 	private DatabaseManager databaseManager;
